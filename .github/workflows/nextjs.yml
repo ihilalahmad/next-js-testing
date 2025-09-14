@@ -55,5 +55,5 @@ jobs:
           git add .
           git commit -m "Deploy production build"
           git branch -M deploy
-          git remote add origin https://github.com/<USERNAME>/<REPO>.git
+          git remote add origin https://github.com/ihilalahmad/next-js-testing.git
           git push -f origin deploy
