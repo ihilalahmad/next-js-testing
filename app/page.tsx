@@ -32,7 +32,8 @@ export default function Page() {
       </h1>
       <p style={{ maxWidth: '400px', textAlign: 'center', color: '#444' }}>
         This is some body text for testing the UI layout. You can replace this
-        with any content you want to display on your page.
+        with any content you want to display on your page. I also updated this
+        to test if the server is changing it on just restart or not.
       </p>
     </main>
   );
