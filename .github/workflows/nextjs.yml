@@ -22,7 +22,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Next.js
-        run: yarn build --no-lint --no-turbo
+        run: yarn build --no-lint --turbo
 
       - name: Deploy build to deploy branch
         run: |
