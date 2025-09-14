@@ -27,7 +27,9 @@ export default function Page() {
           style={{ objectFit: 'contain' }}
         />
       </div>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Test Heading</h1>
+      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>
+        I updated this heading
+      </h1>
       <p style={{ maxWidth: '400px', textAlign: 'center', color: '#444' }}>
         This is some body text for testing the UI layout. You can replace this
         with any content you want to display on your page.
