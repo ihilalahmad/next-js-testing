@@ -2,7 +2,7 @@ name: Build Next.js and Deploy to cPanel Branch
 
 on:
   push:
-    branches: [main] # whenever you push to main, deploy will update
+    branches: [main]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       - name: Build Next.js
         run: yarn build --no-lint --turbo
 
-      - name: Deploy build to deploy branch
+      - name: Prepare deploy branch
         run: |
           git config --global user.name "Hilal Ahmad"
           git config --global user.email "ihilalahmadd@gmail.com"
@@ -33,12 +33,27 @@ jobs:
           git checkout --orphan deploy
           git reset
 
-          # copy required files
-          cp -r .next public package.json yarn.lock server.js next.config.js .
+          # make a temporary folder for deployment
+          mkdir deploy-temp
+          cp -r .next deploy-temp/
+          cp -r public deploy-temp/
+          cp package.json deploy-temp/
+          cp yarn.lock deploy-temp/
+          cp server.js deploy-temp/
 
-          # add files
-          git add -f .next public package.json yarn.lock server.js next.config.js
+          # copy next.config.js if it exists
+          if [ -f next.config.js ]; then
+            cp next.config.js deploy-temp/
+          fi
+          if [ -f next.config.ts ]; then
+            cp next.config.ts deploy-temp/
+          fi
 
-          # commit and push to deploy branch
-          git commit -m "Deploy build"
+          # move into temp folder
+          cd deploy-temp
+          git init
+          git add .
+          git commit -m "Deploy production build"
+          git branch -M deploy
+          git remote add origin https://github.com/<USERNAME>/<REPO>.git
           git push -f origin deploy
