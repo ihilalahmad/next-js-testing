@@ -1,0 +1,44 @@
+name: Build Next.js and Deploy to cPanel Branch
+
+on:
+  push:
+    branches: [main] # whenever you push to main, deploy will update
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Next.js
+        run: yarn build --no-lint --no-turbo
+
+      - name: Deploy build to deploy branch
+        run: |
+          git config --global user.name "Hilal Ahmad"
+          git config --global user.email "ihilalahmadd@gmail.com"
+
+          # create orphan deploy branch
+          git checkout --orphan deploy
+          git reset
+
+          # copy required files
+          cp -r .next public package.json yarn.lock server.js next.config.js .
+
+          # add files
+          git add -f .next public package.json yarn.lock server.js next.config.js
+
+          # commit and push to deploy branch
+          git commit -m "Deploy build"
+          git push -f origin deploy
